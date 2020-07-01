@@ -94,10 +94,10 @@ service vendor.qti.vibrator-1-2 /sbin/vendor.qti.hardware.vibrator@1.2-service
     class hal
     user root
     group root input
+    disabled
     seclabel u:r:recovery:s0
 
 on boot
-    start vendor.qti.vibrator-1-2
     setprop sys.usb.config adb
 
 on property:crypto.ready=0
@@ -112,4 +112,8 @@ on property:crypto.ready=1
 on property:vendor.sys.listeners.registered=true
     start keymaster-4-0
     start gatekeeper-1-0
+    start vendor.qti.vibrator-1-2
     start servicemanager
+
+on property:twrp.apex.loaded=true
+    export LD_LIBRARY_PATH /sbin:/sbin/com.android.runtime.release.apex-mount/lib64:/sbin/com.android.media.swcodec.apex-mount/lib64:/sbin/com.android.conscrypt.apex-mount/lib64/:/vendor/lib64:/vendor/lib64/hw
